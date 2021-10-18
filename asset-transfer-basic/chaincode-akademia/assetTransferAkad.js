@@ -1,5 +1,4 @@
-/*
- * Copyright IBM Corp. All Rights Reserved.
+opyright IBM Corp. All Rights Reserved.
  *
  * SPDX-License-TransacIdentifier: Apache-2.0
  */
@@ -94,9 +93,9 @@ class AssetTransfer extends Contract {
 
     // UpdateAsset updates an existing asset in the world state with provTransacIded parameters.
     async UpdateAsset(ctx, transacId, TransacOwner, oldBalance, amount, newBalance, fingerprint) {
-        const exists = await this.AssetExists(ctx, transacId);
+        const exists = await this.AssetExists(ctx, TransacId);
         if (!exists) {
-            throw new Error(`The asset ${transacId} does not exist`);
+            throw new Error(`The asset ${TransacId} does not exist`);
         }
 
         // overwriting original asset with new asset
@@ -155,29 +154,10 @@ class AssetTransfer extends Contract {
         return JSON.stringify(allResults);
     }
 
-    async RetrieveLogHistory(ctx, transacId) {
-        const allResults = [];
-        const iterator = await ctx.stub.getHistoryForKey(transacId);
-        let result = await iterator.next();
-        while (!result.done) {
-            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
-            let record;
-            try {
-                record = JSON.parse(strValue);
-            } catch (err) {
-                console.log(err);
-                record = strValue;
-            }
-            allResults.push({ Key: result.value.transacId, Record: record });
-            result = await iterator.next();
-        }
-        return JSON.stringify(allResults);
-
-    }
-
 
 }
 
 module.exports = AssetTransfer;
+
 
 
